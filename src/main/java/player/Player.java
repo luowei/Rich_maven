@@ -158,4 +158,8 @@ public abstract class Player {
         }
         return  leftDays;
     }
+
+    public void minusFunds(int tolls) {
+        setFunds(getFunds() - tolls);
+    }
 }

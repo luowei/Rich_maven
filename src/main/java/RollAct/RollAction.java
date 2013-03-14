@@ -58,7 +58,7 @@ public class RollAction {
 
     private void otherLocationPerformance(int location) {
         if(isPointsArea(location)) {
-            player.setPoints(player.getPoints()+richGame.getGameMap().getGroundList().get(location).getPoint());
+            player.setPoints(player.getPoints() + richGame.getGameMap().getGroundList().get(location).getPoint());
         } else{
             estateOperation(location);
         }
@@ -75,7 +75,7 @@ public class RollAction {
                 String result=getResult();
                 if(result.equals("y")&&player.getFunds()>=ground.getPrice()) {
                     richGame.getGameMap().getGroundList().get(location).setGroundType(ground.getGroundType()+1);
-                    player.setFunds(player.getFunds()-ground.getPrice());
+                    player.minusFunds(ground.getPrice());
                     player.getLandedProperty()[ground.getGroundType()-1]-=1;
                     player.getLandedProperty()[ground.getGroundType()]+=1;
                 } else if(player.getFunds()<ground.getPrice()){
@@ -107,7 +107,7 @@ public class RollAction {
         if(player.getFunds()<tolls) {
               player.setBankrupt(true);
         }   else{
-            player.setFunds(player.getFunds()-tolls);
+            player.minusFunds(tolls);
             groundOwner.setFunds(groundOwner.getFunds() + tolls);
             SetColor.printline(groundOwner.getCharacterName() + "的地盘,交过路费" + tolls + "元");
         }
@@ -126,7 +126,7 @@ public class RollAction {
 
     private void buySpace(int location, Ground ground) {
         richGame.getGameMap().getGroundList().get(location).setOwners(player.getDisplayName());
-        player.setFunds(player.getFunds()-ground.getPrice());
+        player.minusFunds(ground.getPrice());
         player.getLandedProperty()[0]+=1;
     }
 
