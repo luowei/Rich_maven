@@ -108,7 +108,7 @@ public class RollAction {
               player.setBankrupt(true);
         }   else{
             player.minusFunds(tolls);
-            groundOwner.setFunds(groundOwner.getFunds() + tolls);
+            groundOwner.addFunds(tolls);
             SetColor.printline(groundOwner.getCharacterName() + "的地盘,交过路费" + tolls + "元");
         }
     }
@@ -253,7 +253,9 @@ public class RollAction {
     private void GiftAction(int giftType) {
         switch(giftType) {
             case 0: SetColor.printline("退出礼品屋");break;
-            case 1:player.setFunds(player.getFunds()+2000);break;
+            case 1:
+                player.addFunds(2000);
+                break;
             case 2:player.setPoints(player.getPoints()+200);break;
             case 3:player.setMascotLeftDays(5);break;
         }

@@ -162,4 +162,8 @@ public abstract class Player {
     public void minusFunds(int tolls) {
         setFunds(getFunds() - tolls);
     }
+
+    public void addFunds(int tolls) {
+        setFunds(getFunds() + tolls);
+    }
 }
