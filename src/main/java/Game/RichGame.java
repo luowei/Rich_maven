@@ -126,4 +126,7 @@ public class RichGame {
         }
     }
 
+    public Player getPlayer(int i) {
+        return getPlayers().get(i);
+    }
 }

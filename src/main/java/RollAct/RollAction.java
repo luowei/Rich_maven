@@ -83,22 +83,33 @@ public class RollAction {
                 }
             }
         }   else{
-            int i=findTheAreaOwner(ground.getOwners()) ;
-            if(player.getMascotLeftDays()>0){
-                SetColor.printline("福神在身，免收过路费");
-            }  else if(richGame.getPlayers().get(i).getHospitalOrPrison()>0){
-                SetColor.printline("主人不在，免收过路费");
-            } else{
-                int times=(int)Math.pow(2,ground.getGroundType());
-                int tolls=(ground.getPrice()/2) *times ;
-                if(player.getFunds()<tolls) {
-                      player.setBankrupt(true);
-                }   else{
-                    player.setFunds(player.getFunds()-tolls);
-                    SetColor.printline( richGame.getPlayers().get(i).getCharacterName()+"的地盘,交过路费"+tolls+"元");
-                    richGame.getPlayers().get(i).setFunds(richGame.getPlayers().get(i).getFunds() + tolls);
+            int ownerIndex = 0;
+            for(int index=0;index<richGame.getPlayerCount();index++){
+                if(richGame.getPlayer(index).getDisplayName().equals(ground.getOwners())){
+                    ownerIndex = index;
+                    break;
                 }
             }
+            int i= ownerIndex;
+            if(player.getMascotLeftDays()>0){
+                SetColor.printline("福神在身，免收过路费");
+            }  else if(richGame.getPlayer(i).getHospitalOrPrison()>0){
+                SetColor.printline("主人不在，免收过路费");
+            } else{
+                int tolls = ground.calculateTolls();
+                payTolls(tolls, ground);
+            }
+        }
+    }
+
+    private void payTolls(int tolls, Ground ground) {
+        Player groundOwner = ground.getGroundOwner(richGame);
+        if(player.getFunds()<tolls) {
+              player.setBankrupt(true);
+        }   else{
+            player.setFunds(player.getFunds()-tolls);
+            groundOwner.setFunds(groundOwner.getFunds() + tolls);
+            SetColor.printline(groundOwner.getCharacterName() + "的地盘,交过路费" + tolls + "元");
         }
     }
 
@@ -125,15 +136,6 @@ public class RollAction {
 
     private boolean isAreaHaveNoOwner(Ground ground) {
         return ground.getOwners().equals("0");
-    }
-
-    private int findTheAreaOwner(String owners) {
-        for(int index=0;index<richGame.getPlayerCount();index++){
-            if(richGame.getPlayers().get(index).getDisplayName().equals(owners)){
-               return index;
-            }
-        }
-        return 0;
     }
 
 

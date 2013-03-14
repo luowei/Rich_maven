@@ -1,5 +1,8 @@
 package RichMap;
 
+import Game.RichGame;
+import player.Player;
+
 public class Ground {
     private String groundName="0";
 	private int groundType=0;
@@ -65,4 +68,19 @@ public class Ground {
         return this.owners.equals(owner);
     }
 
+    public int calculateTolls() {
+        int times=(int)Math.pow(2, getGroundType());
+        return (getPrice()/2) *times;
+    }
+
+    public Player getGroundOwner(RichGame richGame) {
+        int ownerIndex = 0;
+        for(int index=0;index< richGame.getPlayerCount();index++){
+            if(richGame.getPlayer(index).getDisplayName().equals(getOwners())){
+                ownerIndex = index;
+                break;
+            }
+        }
+        return richGame.getPlayer(ownerIndex);
+    }
 }
